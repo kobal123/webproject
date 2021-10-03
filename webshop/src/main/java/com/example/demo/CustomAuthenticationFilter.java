@@ -1,7 +1,9 @@
-package authentication.filter;
+package com.example.demo;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -10,7 +12,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +27,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	private final AuthenticationManager manager;
@@ -37,7 +45,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 			throws AuthenticationException {
 
 		String username = request.getParameter("username");
-		String password = request.getParameter("passwrod");
+		String password = request.getParameter("password");
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 		
 		return manager.authenticate(token);
@@ -67,9 +75,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 				   .sign(algorithm);
 							   
 		
-		response.setHeader("access_token",jwtAccessToken);
-		response.setHeader("refresh_token", jwtRefreshToken);;
-		System.out.println("a user was authenticated!");
+		Map<String,String> tokens = new HashMap<>();
+		tokens.put("accessToken", jwtRefreshToken);
+		tokens.put("refreshToken", jwtRefreshToken);
+		
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 	}
 
 }

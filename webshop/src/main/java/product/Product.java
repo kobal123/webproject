@@ -13,10 +13,13 @@ import java.time.LocalDateTime;
 
 
 
-public record Product(
-					  Long id,
-					  Long userId,
-					  String description,
-					  String name,
-					  double price,
-					  LocalDateTime createdAt) {}
+public class Product{
+	private Long id;
+	private Long userId;
+	private Double price;
+	private Integer Quantity;
+	private Integer Discount;
+	private LocalDateTime  createdAt;
+	private LocalDateTime  deletedAt;
+	
+}

@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +40,7 @@ public class AppUserDataAccessService implements UserDao {
 				""";
 
 		
-		System.out.println(user.toString());
-		return jdbcTemplate.update(sql,user.getName(),user.getEmail(),user.getPassword(),user.getCreatedAt());
+		return jdbcTemplate.update(sql,user.getName(),user.getEmail(),user.getPassword(),new Timestamp(System.currentTimeMillis()));
 	}
 
 	

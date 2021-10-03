@@ -43,7 +43,6 @@ public class AppUserRoleResultSetExtractor implements ResultSetExtractor<AppUser
 			user.addRoles( new Role(name,rolename));
 			
 		}
-		System.out.println(users.get(temp_id).toString());
 		return users.get(temp_id);
 	}
 

@@ -1,6 +1,11 @@
-package authentication;
+package com.example.demo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,13 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import authentication.filter.CustomAuthenticationFilter;
-import user.AppUserDataAccessService;
-import user.UserDao;
 
-@EnableWebSecurity
+
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	private final UserDetailsService service;
@@ -24,7 +25,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public SecurityConfiguration(UserDetailsService service, BCryptPasswordEncoder encoder) {
 		this.service = service;
 		this.passwordEncoder = encoder;
-		
 	}
 	
 	
@@ -37,11 +37,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		System.out.println("hi");
 		http.csrf().disable();
-		
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().anyRequest().permitAll();
-		http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+		//http.authorizeRequests().anyRequest().authenticated();
+		http.authorizeRequests().antMatchers("/users/**").hasRole("ADMIN")
+		.anyRequest().authenticated();
 	}
 
 	@Bean
@@ -50,6 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 		return super.authenticationManagerBean();
 	}
+
 	
 	
 }

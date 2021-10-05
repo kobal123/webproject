@@ -4,35 +4,40 @@
     <meta charset="UTF-8" />
     <title>Hello World</title>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-
-    <!-- Don't use this in production: -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
+  
   </head>
   <body>
-    <div id="root"></div>
-    <script type="text/babel">
+         <div class="container">
+      <form class="form-signin" method="post" action="/product/add">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <p>
+          <label for="Termék neve" class="sr-only">Termék neve</label>
+          <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+        </p>
+        <p>
+          <label for="Termékleírás" class="sr-only">Leírás</label>
+          <input type="text" id="password" name="password" class="form-control" placeholder="Password" required>
+        </p>
+        <p>
+          <label for="Ár" class="sr-only">Ár</label>
+          <input type="text" id="password" name="password" class="form-control" placeholder="Password" required>
+        </p>
+        
+        <p>
+          <label for="Mennyiség" class="sr-only">Mennyiség</label>
+          <input type="text" id="password" name="password" class="form-control" placeholder="Password" required>
+        </p>
+		<input 
+  type="hidden" 
+  th:name="${_csrf.parameterName}" 
+  th:value="${_csrf.token}" />
 
-      ReactDOM.render(
-        <h1>Hello, world!</h1>,
-        document.getElementById('root')
-      );
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Termék létrehozása</button>
+      </form>
       
-      console.log("asdf");
+</div>
 
-    </script>
-    <!--
-      Note: this page is a great way to try React but it's not suitable for production.
-      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
-
-      Read this section for a production-ready setup with JSX:
-      https://reactjs.org/docs/add-react-to-a-website.html#add-jsx-to-a-project
-
-      In a larger project, you can use an integrated toolchain that includes JSX instead:
-      https://reactjs.org/docs/create-a-new-react-app.html
-
-      You can also use React without JSX, in which case you can remove Babel:
-      https://reactjs.org/docs/react-without-jsx.html
-    -->
   </body>
 </html>

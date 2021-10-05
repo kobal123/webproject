@@ -3,7 +3,11 @@ package user;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,16 +17,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import order.OrderDao;
+import order.OrderDataAccessService;
+
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:3000",allowedHeaders={"x-auth-token", "x-requested-with", "x-xsrf-token"})
 public class AppUserController {
 	private final AppUserService userService;
 	private final RoleService roleService;
-	public AppUserController(AppUserService service, RoleService roleservice) {
+	private final OrderDao dao;
+
+	public AppUserController(AppUserService service, RoleService roleservice,
+			OrderDataAccessService orderservice) {
 		this.userService = service;
 		this.roleService= roleservice;
+		this.dao = orderservice;
 	}
 	
 	
@@ -37,13 +47,14 @@ public class AppUserController {
 	
 	
 	@GetMapping("user")
-	public Principal currentUser(Principal principal) {
+	public String currentUser(Principal principal) {
 
 		
 		
-		return principal;
+		return principal.getName();
 	}
-	
+
+
 	
 	
 	
@@ -62,6 +73,13 @@ public class AppUserController {
 		System.out.println(user.getName());
 		userService.addUser(user);
 		
+	}
+	
+	@GetMapping("add/{id}")
+	public String test(@PathVariable int id,Principal p){
+		AppUser u = userService.getUserByUsername(p.getName());
+		
+		return u.toString();
 	}
 	
 }

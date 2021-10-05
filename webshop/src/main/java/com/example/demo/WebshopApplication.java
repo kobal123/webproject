@@ -33,7 +33,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 
 
-@ComponentScan({"user"})
+@ComponentScan({"user","order","product","orderitem"})
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 
 public class WebshopApplication {
@@ -71,9 +71,13 @@ public class WebshopApplication {
 				
 				
 				
-				http.cors()
-				.and().formLogin().loginPage("/login").and()
-				.authorizeRequests().antMatchers("/api/**").hasRole("ADMIN");
+				http
+				.formLogin().and()
+				.authorizeRequests().antMatchers("/api/**").hasRole("ADMIN")
+				.antMatchers("/orders","/orders/**").authenticated()
+				.antMatchers("/product","/product/**").authenticated()
+				.and().csrf()
+				;
 				
 				
 				//http.authorizeRequests().anyRequest().permitAll();

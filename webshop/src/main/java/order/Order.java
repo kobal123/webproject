@@ -17,6 +17,23 @@ public class Order{
 	/*
 	 * TODO: a rendelés státuszát valahogy menteni:
 	 * 		pl: már feladták, kézbesítették stb
+	 * 
+	 * 
+	 * 
 	 * */
+	public Order(Long id, Long userId, Double grandTotal, String shippingAddress, LocalDateTime createdAt,
+			LocalDateTime updatedAt, Boolean cancelled) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.grandTotal = grandTotal;
+		this.shippingAddress = shippingAddress;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.cancelled = cancelled;
+	}
+	
+	
+	
 	
 }

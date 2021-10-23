@@ -55,6 +55,19 @@ public class AppUserDataAccessService implements UserDao {
 		return jdbcTemplate.query(sql, new AppUserRoleResultSetExtractor(), username);
 		
 	}
+
+
+	@Override
+	public AppUser selectUserByUserId(Long id) {
+		var sql = """
+				SELECT * FROM users 
+				WHERE users.id = ? ;
+				 """;
+					
+		
+		
+		return jdbcTemplate.queryForObject(sql,new AppUserRowMapper(),id );
+	}
 	
 
 

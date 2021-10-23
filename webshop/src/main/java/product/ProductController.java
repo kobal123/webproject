@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/products")
@@ -14,8 +15,11 @@ public class ProductController {
 	
 	
 	@GetMapping("/add")
-	public String addPage() {
-		return "custom";
+	public ModelAndView addPage() {
+	    ModelAndView modelAndView = new ModelAndView();
+	    modelAndView.setViewName("product.html");
+	    return modelAndView;
+		
 	}
 	
 	@GetMapping("/")
@@ -31,6 +35,6 @@ public class ProductController {
 		
 		
 		
-		return "index";
+		return "index.html";
 	}
 }

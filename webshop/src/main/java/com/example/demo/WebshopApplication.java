@@ -33,7 +33,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 
 
-@ComponentScan({"user","order","product","orderitem"})
+@ComponentScan({"user","order","product","orderitem","registration","oauth"})
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 
 public class WebshopApplication {
@@ -72,7 +72,7 @@ public class WebshopApplication {
 				
 				
 				http
-				.formLogin().and()
+				.formLogin().and().oauth2Login().and()
 				.authorizeRequests().antMatchers("/api/**").hasRole("ADMIN")
 				.antMatchers("/orders","/orders/**").authenticated()
 				.antMatchers("/product","/product/**").authenticated()

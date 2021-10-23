@@ -16,5 +16,8 @@ public interface UserDao {
 	public int addUsers(AppUser user);
 	
 	
+	public AppUser selectUserByUserId(Long id);
+	
+	
 	
 }

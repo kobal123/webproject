@@ -1,14 +1,19 @@
 package user;
 
 import java.security.Principal;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import order.OrderDao;
 import order.OrderDataAccessService;
 
 
-@RestController
-@RequestMapping("/api")
+@Controller
+@RequestMapping("/poo")
 public class AppUserController {
 	private final AppUserService userService;
 	private final RoleService roleService;
@@ -46,14 +52,19 @@ public class AppUserController {
 	}
 	
 	
-	@GetMapping("user")
-	public String currentUser(Principal principal) {
+	@GetMapping("profile")
+	public String currentUser(Principal principal,Model m) {
 
+		AppUser u = userService.loadUserById(Long.parseLong(principal.getName()));
 		
-		
-		return principal.getName();
+		m.addAttribute("Principal", u.getName());
+		return "userprofile.html";
 	}
 
+	@GetMapping("user2")
+    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
+        return Collections.singletonMap("name", principal.getAttributes());
+    }
 
 	
 	

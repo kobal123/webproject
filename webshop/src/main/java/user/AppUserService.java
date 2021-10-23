@@ -42,6 +42,12 @@ public class AppUserService implements UserDetailsService {
 		return userdao.selectUserByUserName(username);
 	}
 
+	
+	
+	
+	public AppUser loadUserById(Long id) {
+		return userdao.selectUserByUserId(id);
+	}
 
 
 	@Override

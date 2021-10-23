@@ -2,13 +2,18 @@ package user;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 
 
-public class AppUser{
+
+public class AppUser implements OAuth2User{
 
 private  Long id;
 private String name;
@@ -19,6 +24,27 @@ private List<Role> roles = new ArrayList<>();
 
 
 
+
+
+
+public AppUser(String name, String email, String password) {
+
+	this.name = name;
+	this.email = email;
+	this.password = password;
+
+}
+
+
+
+
+public AppUser(String name, String email, String password, LocalDateTime created) {
+	
+	this.name = name;
+	this.email = email;
+	this.password = password;
+	this.createdAt = created;
+}
 
 
 
@@ -90,6 +116,16 @@ public boolean equals(Object obj) {
 public String toString() {
 	return "AppUser [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", createdAt="
 			+ createdAt + ", roles=" + roles.toString() + "]";
+}
+@Override
+public Map<String, Object> getAttributes() {
+	// TODO Auto-generated method stub
+	return null;
+}
+@Override
+public Collection<? extends GrantedAuthority> getAuthorities() {
+	// TODO Auto-generated method stub
+	return null;
 }
 
 }

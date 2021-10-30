@@ -6,7 +6,9 @@ import java.util.Arrays;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.Filter;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +36,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 
 
-@ComponentScan({"user","order","product","orderitem","registration","oauth"})
+@ComponentScan({"user","order","product","orderitem","registration","oauth","image"})
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 
 public class WebshopApplication {
@@ -93,7 +96,7 @@ public class WebshopApplication {
 			 @Bean
 			    public CorsConfigurationSource corsConfigurationSource() {
 			        final CorsConfiguration configuration = new CorsConfiguration();
-			        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+			        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8000"));
 			        configuration.setAllowedMethods(Arrays.asList("HEAD",
 			                "GET", "POST", "PUT", "DELETE", "PATCH"));
 			        // setAllowCredentials(true) is important, otherwise:
@@ -110,7 +113,6 @@ public class WebshopApplication {
 			
 	  }
 	  
-	
 
 	  
 	@Bean

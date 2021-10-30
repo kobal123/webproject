@@ -57,7 +57,7 @@ public class AppUserController {
 
 		AppUser u = userService.loadUserById(Long.parseLong(principal.getName()));
 		
-		m.addAttribute("Principal", u.getName());
+		m.addAttribute("Principal", principal.getName());
 		return "userprofile.html";
 	}
 
@@ -67,7 +67,10 @@ public class AppUserController {
     }
 
 	
-	
+	@GetMapping("fragment")
+	public String frag() {
+		return "test_fragments.html";
+	}
 	
 	
 	@GetMapping("users/{username}")

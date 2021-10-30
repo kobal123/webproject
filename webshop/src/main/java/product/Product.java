@@ -20,17 +20,29 @@ public class Product{
 	private Integer Quantity;
 	private String name;
 	
+	
+
+
 	private LocalDateTime  createdAt;
 	private LocalDateTime  deletedAt;
 	
 	
-	public Product(Long id, Long userId, Double price, Integer quantity) {
+	public Product(Long id, Long userId, Double price, Integer quantity,String name) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.price = price;
-		Quantity = quantity;
+		this.Quantity = quantity;
+		this.name=name;
 		
+	}
+	public Product(Long userId, Double price, Integer quantity,String name) {
+		super();
+
+		this.userId = userId;
+		this.price = price;
+		this.Quantity = quantity;
+		this.name=name;
 	}
 	
 	
@@ -46,6 +58,15 @@ public class Product{
 		this.name=name;
 	}
 
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 
 	public Long getId() {

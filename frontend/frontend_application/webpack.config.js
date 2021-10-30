@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 
-let htmlPageNames = ['product','signup','asd','userprofile'];
+let htmlPageNames = ['product','signup','asd','userprofile',"test","test_fragments"];
 let multipleHtmlPlugins = htmlPageNames.map(name => {
   return new HtmlWebpackPlugin({
     template: `./src/${name}.html`, // relative path to the HTML files

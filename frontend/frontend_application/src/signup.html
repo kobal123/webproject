@@ -14,6 +14,7 @@
     <form action="#" th:action="@{/signup}" th:object="${userform}" method="post">
     <input type="text" th:field="*{username}"  name="username" placeholder="Username" />
     <input type="text" th:field="*{email} " name="email" placeholder="E-mail" />
+
     <input id="pass1" type="password" th:field="*{password}" name="password" placeholder="Password" />
     
     <input type="submit"  value="Sign me up" />

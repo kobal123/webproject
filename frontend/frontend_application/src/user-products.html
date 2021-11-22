@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8">
         <title>E Store - eCommerce HTML Template</title>
@@ -178,34 +178,36 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-4">
-                                <div class="product-item">
-                                    <div class="product-title">
-                                        <a href="#">Product Name</a>
-                                        <div class="ratting">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                            <th:block th:each="product : ${products}">
+                                <div class="col-md-4">
+                                    <div class="product-item">
+                                        <div class="product-title">
+                                            <a th:text="${product.getName()}" th:href="@{|http://localhost:8080/products/p/${product.getPath()}|}">Product Name</a>
+                                            <div class="ratting">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="product-image">
-                                        <a href="product-detail.html">
-                                            <img src="img/product-1.jpg" alt="Product Image">
-                                        </a>
-                                        <div class="product-action">
-                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                            <a href="#"><i class="fa fa-search"></i></a>
+                                        <div class="product-image">
+                                            <a href="product-detail.html">
+                                                <img th:src="@{|http://localhost:8080/products/${product.getId()}/${product.getImages().get(0).getPath()}|}" alt="Product Image">
+                                            </a>
+                                            <div class="product-action">
+                                                <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                                <a href="#"><i class="fa fa-heart"></i></a>
+                                                <a href="#"><i class="fa fa-search"></i></a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="product-price">
-                                        <h3><span>$</span>99</h3>
-                                        <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                        <div class="product-price">
+                                            <h3 th:text="${product.getPrice()}"><span>$</span>99</h3>
+                                            <a class="btn" th:attr="onclick=|addToCart('${product.getId()}')|"><i class="fa fa-shopping-cart"></i> Add to cart</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </th:block>
                             <div class="col-md-4">
                                 <div class="product-item">
                                     <div class="product-title">
@@ -708,6 +710,29 @@
         
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
+
+        <script>
+            /*<![CDATA[*/
+            
+            
+        
+            
+        function addToCart(obj){
+          console.log(obj);
+          let request = new XMLHttpRequest();
+          let token = document.querySelector('meta[name="_csrf"]').content;
+          let header = document.querySelector('meta[name="_csrf_header"]').content;
+          
+          request.open("POST", "http://localhost:8080/cart/add?id="+obj);
+          request.setRequestHeader(header,token);
+          request.send();
+        }
+        
+            /*]]>*/
+        
+          
+          </script>
+
+
     </body>
 </html>
-    

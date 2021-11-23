@@ -22,20 +22,45 @@ public class ImageDataAccessService implements ImageDao{
 	}
 
 	@Override
-	public byte[] getProductImageById(Long id) {
+	public List<ProductImage> getProductImageById(Long id) {
 		var sql=""" 
-				select image from 
-				product 
-				 inner join
-				productImages on product.id = productmages.product_id
-				 inner join images on images.image_id = productimages.image_id
-				
-				where product.id = ? 
+				select * from
+				images
+				where product_id = ? 
 				
 				""";
 		
 		
-		return jdbcTemplate.query(sql, new ImageResultSetExtractor(),id);
+		return jdbcTemplate.query(sql, new ImageRowMapper(),id);
+	}
+
+	@Override
+	public int saveImage(ProductImage image) {
+		var sql=""" 
+				insert into images(product_id,image,path)
+				values(?,?,?);
+				
+				""";
+		
+		
+		
+		return jdbcTemplate.update(sql,image.getProduct_id(),image.getData(),image.getPath());
+	}
+
+	/**
+	 *this returns a list with one Image, where the image path is the name given.
+	 */
+	@Override
+	public List<ProductImage> getSingleProductImageByNameAndProductId(Long id,String name) {
+		
+		var sql=""" 
+				select *
+				from images
+				where images.path =? and images.product_id=?
+				""";
+		
+		
+		return jdbcTemplate.query(sql, new ImageResultSetExtractor(),name,id);
 	}
 	
 	

@@ -1,6 +1,10 @@
 package product;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import image.ProductImage;
 
 
 /*
@@ -19,10 +23,15 @@ public class Product{
 	private Double price;
 	private Integer Quantity;
 	private String name;
+	private String path;
+	List<ProductImage> images = new ArrayList<>();
 	
 	
 
 
+	public String getPath() {
+		return path;
+	}
 	private LocalDateTime  createdAt;
 	private LocalDateTime  deletedAt;
 	
@@ -34,6 +43,7 @@ public class Product{
 		this.price = price;
 		this.Quantity = quantity;
 		this.name=name;
+		this.path = name.replace(" ", "-") + "-" + id;
 		
 	}
 	public Product(Long userId, Double price, Integer quantity,String name) {
@@ -43,6 +53,7 @@ public class Product{
 		this.price = price;
 		this.Quantity = quantity;
 		this.name=name;
+
 	}
 	
 	
@@ -56,6 +67,8 @@ public class Product{
 		this.createdAt = createdAt;
 		this.deletedAt = deletedAt;
 		this.name=name;
+		this.path = this.name.replace(" ", "-") + "-" + this.id;
+
 	}
 
 
@@ -145,6 +158,12 @@ public class Product{
 
 
 
+	public List<ProductImage> getImages() {
+		return images;
+	}
+	public void setImages(List<ProductImage> images) {
+		this.images = images;
+	}
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", userId=" + userId + ", price=" + price + ", Quantity=" + Quantity

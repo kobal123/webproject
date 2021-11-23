@@ -8,9 +8,9 @@ public interface OrderDao {
 	
 	List<Order> getOrdersByUserId(Long id);
 	
-	Order getOrderByOrderId();
+	Order getOrderByOrderId(Long orderId);
 	
-	void saveOrder();
+	Long saveOrder(Order o);
 	
 	
 }

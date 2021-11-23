@@ -5,42 +5,56 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 @RequestMapping("/orders")
 public class OrderController {
-	private final OrderDao dao;
+	private OrderService orderService;
+
+
 	
-	public OrderController(OrderDataAccessService service) {
-		this.dao = service;
+	
+	
+	
+	public OrderController(OrderService orderService) {
+		super();
+		this.orderService = orderService;
+	}
+
+	
+	@GetMapping("/place")
+	public String placeOrder(Principal p) {
+		orderService.placeOrderForUser(Long.parseLong(p.getName()));
+		
+		return "index";
+	}
+
+	@GetMapping("")
+	public String getOrders(Principal p) {
+		
+		
+		return "orders";
 	}
 	
 	
-	
-	@PostMapping("new")
-	public void makeOrder(){
+	@GetMapping("/{orderId}")
+	public String getSingleOrder(Principal principal,@PathVariable Long orderId) {
 		
-	}
-	
-	
-	
-	
-	@GetMapping("/")
-	public List<Order> getOrders(Principal p) {
-		List<Order> o = dao.getOrdersByUserId(Long.parseLong(p.getName()));
+		try {
+			Order o = orderService.loadOrderByUserIdAndOrderId(Long.parseLong(principal.getName()),orderId);
+		} catch (NumberFormatException e) {
+
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 		
-		
-		return o;
-	}
-	
-	
-	public String getOrderById() {
-		
-		Order o = dao.getOrderByOrderId();
-		
-		return "";
+		return "orders";
 	}
 }

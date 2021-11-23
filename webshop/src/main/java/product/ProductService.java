@@ -14,14 +14,32 @@ public class ProductService {
 	}
 	
 	
+	public List<String> productNameAutoComplete(String productName){
+		dao.getProductNamesLikeInput(productName);
+		
+		
+		return null;
+	}
 	
-	List<Product> getProductsByUserId(Long id){
+	
+	public List<Product> getProductsByUserId(Long id){
 		return dao.selectProductsByUserId(id);
 	}
 	
 	
-	int saveProduct(Product p) {
+	public Long saveProduct(Product p) {
 		return dao.addProduct(p);
 	}
+	
+	public Product getProductById(Long id) {
+		return dao.getProductById(id);
+	}
+	
+	
+	public Product getProductByIdAndName(Long id,String name) {
+		return dao.getProductByIdAndName(id, name);
+	}
+	
+	
 	
 }

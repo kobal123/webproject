@@ -13,7 +13,7 @@ public interface UserDao {
 	public AppUser selectUserByUserName(String username);
 	
 	
-	public int addUsers(AppUser user);
+	public Long addUsers(AppUser user);
 	
 	
 	public AppUser selectUserByUserId(Long id);

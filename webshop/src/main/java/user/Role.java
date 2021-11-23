@@ -1,9 +1,11 @@
 package user;
 
+import java.io.Serializable;
+
 import org.springframework.security.core.GrantedAuthority;
 
 
-public class Role {
+public class Role implements Serializable {
 	private String username;
 	private String name;
 	

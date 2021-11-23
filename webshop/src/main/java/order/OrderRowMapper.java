@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
-public class OrderRowMapper implements RowMapper<List<Order>>{
+public class OrderRowMapper implements RowMapper<Order>{
 
 	@Override
-	public List<Order> mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public Order mapRow(ResultSet rs, int rowNum) throws SQLException {
 
 		return null;
 	}

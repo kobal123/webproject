@@ -23,7 +23,7 @@ public class ProductRowMapper implements RowMapper<Product>{
 		return new Product(id,userID,name,price,quantity,LocalDateTime
 				.parse(createdAt.replace(' ', 'T').substring(0, createdAt.length()-3)),
 				LocalDateTime
-				.parse(createdAt.replace(' ', 'T').substring(0, updatedAt.length()-3)));
+				.parse(createdAt.replace(' ', 'T').substring(0, createdAt.length()-3)));
 	}
 
 }

@@ -9,11 +9,11 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-public class OrderResultSetExtractor implements	ResultSetExtractor<List<Order>> {
+public class OrderResultSetExtractor implements	ResultSetExtractor<Order> {
 
 	@Override
-	public List<Order> extractData(ResultSet rs) throws SQLException, DataAccessException {
-		List<Order> orders = new ArrayList<>();
+	public Order extractData(ResultSet rs) throws SQLException, DataAccessException {
+		Order order = null;
 		while(rs.next()) {
 			Long id = rs.getLong("id");
 			Long userId = rs.getLong("user_idd");
@@ -27,11 +27,11 @@ public class OrderResultSetExtractor implements	ResultSetExtractor<List<Order>> 
 			LocalDateTime updated = LocalDateTime
 					.parse(updatedAt.replace(' ', 'T').substring(0, updatedAt.length()-3));
 			Boolean cancelled = rs.getBoolean("is_cancelled");
-			orders.add(new Order(id,userId,total,shipping,created,updated,cancelled));
+			order = new Order(id,userId,total,shipping,created,updated);
 		}
 		
 		
-		return orders;
+		return order;
 	}
 
 }

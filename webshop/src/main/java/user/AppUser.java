@@ -1,5 +1,6 @@
 package user;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 
 
-public class AppUser implements OAuth2User{
+public class AppUser implements OAuth2User,Serializable{
 
 private  Long id;
 private String name;
@@ -32,6 +33,16 @@ public AppUser(String name, String email, String password) {
 	this.name = name;
 	this.email = email;
 	this.password = password;
+	this.createdAt = LocalDateTime.now();
+
+
+}
+public AppUser(String name, String email) {
+
+	this.name = name;
+	this.email = email;
+	this.createdAt = LocalDateTime.now();
+
 
 }
 

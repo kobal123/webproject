@@ -6,7 +6,14 @@ public interface ImageDao {
 
 	List<byte[]> getProductImagesById(Long id);
 	
-	byte[] getProductImageById(Long id);
+	List<ProductImage> getProductImageById(Long id);
+	
+	List<ProductImage> getSingleProductImageByNameAndProductId(Long id,String name);
+	
+	int saveImage(ProductImage image);
+	
+	
+	
 
 	
 }

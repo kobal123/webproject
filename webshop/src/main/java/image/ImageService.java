@@ -1,6 +1,9 @@
-package image;
+	package image;
+
+import java.util.List;
 
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ImageService {
@@ -12,10 +15,27 @@ public class ImageService {
 	}
 	
 	
-	public byte[] getImageByProductId(Long id) {
+	
+	/**
+	 * 
+	 * 
+	 * @param id
+	 * @return A list of products
+	 */
+	public List<ProductImage> getImageByProductId(Long id) {
 		return service.getProductImageById(id);
 	}
 	
 	
+	public List<ProductImage> getImageByImageNameAndProductId(Long id,String name) {
+		return service.getSingleProductImageByNameAndProductId(id,name);
+	}
+	
+	
+	
+	
+	public int saveImage(ProductImage image) {
+		return service.saveImage(image);
+	}
 
 }

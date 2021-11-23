@@ -1,10 +1,16 @@
 package user;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -32,7 +38,7 @@ public class AppUserDataAccessService implements UserDao {
 
 
 	@Override
-	public int addUsers(AppUser user) {
+	public Long addUsers(AppUser user) {
 		var sql ="""
 				INSERT INTO
 				 users(name,email,password,createdAt)
@@ -40,7 +46,22 @@ public class AppUserDataAccessService implements UserDao {
 				""";
 
 		
-		return jdbcTemplate.update(sql,user.getName(),user.getEmail(),user.getPassword(),new Timestamp(System.currentTimeMillis()));
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(
+				  new PreparedStatementCreator() {
+				    public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				      PreparedStatement statement = connection.prepareStatement(sql,new String[] { "id" });
+				      statement.setString(1, user.getName());
+				      statement.setString(2,user.getEmail());
+				      statement.setString(3, user.getPassword());
+				      statement.setObject(4,user.getCreatedAt());
+				      return statement;
+				    }
+				  }, keyHolder);
+	return keyHolder.getKey().longValue();
+		
+		
 	}
 
 	

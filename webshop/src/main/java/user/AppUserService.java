@@ -29,11 +29,12 @@ public class AppUserService implements UserDetailsService {
 	
 	
 	public List<AppUser> getUsers(){
-		return userdao.selectUsers();
+		List<AppUser> users = userdao.selectUsers();
+		return users;
 	}
 	
 	
-	public int addUser(AppUser user) {
+	public Long addUser(AppUser user) {
 		return userdao.addUsers(user);
 	}
 	
@@ -50,6 +51,10 @@ public class AppUserService implements UserDetailsService {
 	}
 
 
+
+	
+	
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		AppUser user = userdao.selectUserByUserName(username);
@@ -66,4 +71,14 @@ public class AppUserService implements UserDetailsService {
 	}
 	
 	
+	
 }
+
+
+
+
+
+
+
+
+

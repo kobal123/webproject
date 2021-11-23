@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
@@ -32,17 +33,19 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import oauth.OAuthService;
 
 
 
-@ComponentScan({"user","order","product","orderitem","registration","oauth","image"})
+@ComponentScan({"user","order","product","orderitem","registration","oauth","image","cart","cart_item","search"})
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 
 public class WebshopApplication {
     private static ApplicationContext applicationContext;
 
 	public static void main(String[] args) {
+		System.out.println(LocalDateTime.now());
 		applicationContext = SpringApplication.run(WebshopApplication.class, args);
 	}
 
@@ -51,13 +54,16 @@ public class WebshopApplication {
 	 
 	  @Configuration
 	  @EnableWebSecurity
+	
 	  protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-		  private final UserDetailsService service;
+		  	private final UserDetailsService service;
 			private final BCryptPasswordEncoder passwordEncoder;
+			private OAuthService authService;
 			
-			public SecurityConfiguration(UserDetailsService service, BCryptPasswordEncoder encoder) {
+			public SecurityConfiguration(UserDetailsService service, BCryptPasswordEncoder encoder,OAuthService authservice) {
 				this.service = service;
 				this.passwordEncoder = encoder;
+				this.authService= authservice;
 			}
 			
 			
@@ -70,13 +76,12 @@ public class WebshopApplication {
 
 			@Override
 			protected void configure(HttpSecurity http) throws Exception {
-				System.out.println("hi");
 				
 				
 				
 				http
-				.formLogin().and().oauth2Login().and()
-				.authorizeRequests().antMatchers("/api/**").hasRole("ADMIN")
+				.formLogin().and().oauth2Login().userInfoEndpoint().userService(authService).and().and()
+				.authorizeRequests()
 				.antMatchers("/orders","/orders/**").authenticated()
 				.antMatchers("/product","/product/**").authenticated()
 				.and().csrf()

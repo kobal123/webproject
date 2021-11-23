@@ -9,8 +9,19 @@ public interface ProductDao {
 	
 	List<Product> selectProducts();
 	
-	int addProduct(Product p);
+	Long addProduct(Product p);
 	
 	
 	List<Product> selectProductsByUserId(Long id);
+	
+	
+	Product getProductById(Long id);
+	
+	
+	Product getProductByIdAndName(Long id, String name);
+	
+	List<Product> getProductsByName(String name);
+	
+	
+	List<String> getProductNamesLikeInput(String name);
 }

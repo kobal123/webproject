@@ -52,17 +52,40 @@ public class CartController {
 	private String getUserCart(Principal principal, Model model) {
 		Cart shoppingCart = cartService.getUserShoppingCartByUserId(Long.parseLong(principal.getName()));
 		List<CartObjectWrapper> wrapper = new ArrayList<>();
+		Double total=0d;
 		for(var item : shoppingCart.getItems()) {
+			total+= (item.getPrice() * item.getQuantity());
 			Product p = productService.getProductById(item.getProductId());
 			p.setImages(imageService.getImageByProductId(p.getId()));
 			wrapper.add( new CartObjectWrapper(item, p));
 		}
 		
 		model.addAttribute("wrapper",wrapper);
-		model.addAttribute("total_price", "this is a message");
+		model.addAttribute("total_price", total);
 		return  "cart";
 	}
 	
+	
+	@PostMapping("/delete")
+	public String deleteCartItem(Principal principal,Model model,@RequestParam(name = "cartItemId",required = true) Long cartItemId) {
+		cartService.deleteCartItemById(cartItemId);
+		
+		Cart shoppingCart = cartService.getUserShoppingCartByUserId(Long.parseLong(principal.getName()));
+		List<CartObjectWrapper> wrapper = new ArrayList<>();
+		Double total=0d;
+		for(var item : shoppingCart.getItems()) {
+			total+= (item.getPrice() * item.getQuantity());
+			Product p = productService.getProductById(item.getProductId());
+			p.setImages(imageService.getImageByProductId(p.getId()));
+			wrapper.add( new CartObjectWrapper(item, p));
+		}
+		
+		model.addAttribute("wrapper",wrapper);
+		model.addAttribute("total_price", total);
+		return  "redirect:/";
+		
+		//return "redirect:/";
+	}
 	
 	
 	
@@ -77,7 +100,7 @@ public class CartController {
 		}else
 			cartService.addItemToCart(Long.parseLong(principal.getName()), productId,quantity);
 		
-		return "redirect:/cart";
+		return "redirect:/";
 	}
 	
 	

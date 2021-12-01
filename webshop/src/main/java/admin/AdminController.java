@@ -37,7 +37,7 @@ public class AdminController {
 
 
 
-	@GetMapping
+	@GetMapping("")
 	String getLoggedInUsers(Model m){
 		
 		m.addAttribute("users", appUserService.getUsers());

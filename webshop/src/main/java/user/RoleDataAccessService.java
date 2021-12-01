@@ -31,6 +31,18 @@ public class RoleDataAccessService implements RoleDao{
 		
 		return roles;
 	}
+
+	@Override
+	public void addUserRoleToUser(String username) {
+
+		var sql = """
+				insert into role(username,rolename)
+				values(?,?);
+				""";
+		
+		jdbcTemplate.update(sql,username,"ROLE_USER");
+
+	}
 	
 	
 

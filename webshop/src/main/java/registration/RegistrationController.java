@@ -49,7 +49,7 @@ public class RegistrationController {
 	
 	
 	@PostMapping("")
-	public void registerUser(UserForm p,BindingResult bindingResult,Model m){
+	public String registerUser(UserForm p,Model m){
 
 			
 		
@@ -73,14 +73,12 @@ public class RegistrationController {
 				System.out.println(message+" is already taken");
 				
 				m.addAttribute("userform", p);
-				System.out.println("email is: "+bindingResult.getRawFieldValue("email"));
 
-				bindingResult.rejectValue("username", "name_taken",message+" is already taken");
 
 			}
 		}
 			
-		
+		return "redirect:/login";
 	}
 	
 }

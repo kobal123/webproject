@@ -38,7 +38,7 @@ import oauth.OAuthService;
 
 
 
-@ComponentScan({"user","order","product","orderitem","registration","oauth","image","cart","cart_item","search"})
+@ComponentScan({"user","order","product","orderitem","registration","oauth","image","cart","cart_item","search","thymeleaf","admin"})
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 
 public class WebshopApplication {
@@ -84,6 +84,9 @@ public class WebshopApplication {
 				.authorizeRequests()
 				.antMatchers("/orders","/orders/**").authenticated()
 				.antMatchers("/product","/product/**").authenticated()
+				.antMatchers("/cart","/cart/**").authenticated()
+				.antMatchers("/api/cart","/api/cart/**").authenticated()
+				.antMatchers("/admin","/admin/**").hasRole("ADMIN")
 				.and().csrf()
 				;
 				

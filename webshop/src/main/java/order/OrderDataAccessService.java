@@ -21,7 +21,7 @@ public class OrderDataAccessService implements OrderDao{
 	}
 
 	@Override
-	public List<Order> getOrdersByUserId(Long id) {
+	public List<Order> getOrdersByUserId(Long userId) {
 		
 		var sql= """
 				select * from
@@ -30,7 +30,7 @@ public class OrderDataAccessService implements OrderDao{
 		
 		
 		
-		return jdbcTemplate.query(sql, new OrderRowMapper(),id);
+		return jdbcTemplate.query(sql, new OrderRowMapper(),userId);
 	}
 
 	@Override

@@ -27,6 +27,7 @@ public class Cart {
 	public Cart(Long userId) {
 		super();
 		this.userId = userId;
+		this.createdAt = LocalDateTime.now();
 	}
 
 	public Long getId() {

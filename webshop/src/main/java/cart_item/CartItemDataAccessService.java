@@ -24,6 +24,7 @@ public class CartItemDataAccessService implements CartItemDao{
 				select * from
 				cart_item
 				where cart_id = ?
+				order by id desc;
 				""";
 		
 		return jdbcTemplate.query(sql, new CartItemRowMapper(),id);

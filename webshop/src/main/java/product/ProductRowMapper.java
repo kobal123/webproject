@@ -20,6 +20,7 @@ public class ProductRowMapper implements RowMapper<Product>{
 		String name = rs.getString("product_name");
 		String createdAt = rs.getString("created_at");
 		String updatedAt = rs.getString("updated_at");
+		String description = rs.getString("description");
 		return new Product(id,userID,name,price,quantity,LocalDateTime
 				.parse(createdAt.replace(' ', 'T').substring(0, createdAt.length()-3)),
 				LocalDateTime

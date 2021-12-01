@@ -54,13 +54,16 @@ public class CartService {
 	 * @param userId
 	 */
 	public void createCartForNewUser(Long userId) {
-
+		accessService.createCartForNewUserById(userId);
+	}
+	
+	public void deleteCartItemById(Long cartItemId) {
+		cartItemDao.deleteCartItemById(cartItemId);
 	}
 	
 	
 	
-	
-	public void addItemToCart(Long userId,Long productId) {
+	public CartItem addItemToCart(Long userId,Long productId) {
 		Long start = System.currentTimeMillis();
 		Cart cart = accessService.getCartByUserId(userId);
 		Product p = productDataAccessService.getProductById(productId);
@@ -80,9 +83,10 @@ public class CartService {
 		Long end = System.currentTimeMillis();
 		System.out.println("inserting into a cart took "+ (end-start)/1000 +" seconds");
 		
+		return item;
 	}
 	
-	public void addItemToCart(Long userId,Long productId,Integer quantity) {
+	public CartItem addItemToCart(Long userId,Long productId,Integer quantity) {
 		if(quantity <1);// TODO: check if the quantity is less than 0. If it is, throw exception
 		
 		Long start = System.currentTimeMillis();
@@ -94,7 +98,7 @@ public class CartService {
 		
 		if(!Objects.equals(item, null)) {
 			System.out.println("The item " + item.toString()+ " exist, increasing quantity by "+quantity);
-			cartItemDao.updateCartItem(productId,quantity);
+			cartItemDao.updateCartItem(productId,item.getQuantity()+quantity);
 		}else {
 			System.out.println("The item  does not exist yet, adding it");
 			item = new CartItem(cart.getId(),productId,p.getPrice(),1);
@@ -103,6 +107,7 @@ public class CartService {
 		
 		Long end = System.currentTimeMillis();
 		System.out.println("inserting into a cart took "+ (end-start)/1000 +" seconds");
+		return item;
 		
 	}
 	

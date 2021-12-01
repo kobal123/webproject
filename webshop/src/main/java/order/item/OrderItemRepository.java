@@ -17,12 +17,19 @@ public class OrderItemRepository implements OrderItemDao{
 	
 	@Override
 	public List<OrderItem> getOrderItemsByOrderId(Long orderId) {
-		return null;
+		var sql = """
+				select * from
+				order_item
+				where order_id = ?
+				""";
+		
+		return jdbcTemplate.query(sql, new OrderItemRowMapper(),orderId);
 	}
 
 	@Override
 	public OrderItem getOrderItemById(Long orderItemId) {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 

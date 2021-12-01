@@ -3,6 +3,7 @@ package product;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import image.ProductImage;
 
@@ -18,20 +19,15 @@ import image.ProductImage;
 
 
 public class Product{
+
 	private Long id;
 	private Long userId;
 	private Double price;
 	private Integer Quantity;
 	private String name;
 	private String path;
+	private String description;
 	List<ProductImage> images = new ArrayList<>();
-	
-	
-
-
-	public String getPath() {
-		return path;
-	}
 	private LocalDateTime  createdAt;
 	private LocalDateTime  deletedAt;
 	
@@ -56,7 +52,35 @@ public class Product{
 
 	}
 	
+	public Product(Long userId, Double price, Integer quantity,String name,String description) {
+		super();
+
+		this.userId = userId;
+		this.price = price;
+		this.Quantity = quantity;
+		this.name=name;
+		this.description = description;
+
+	}
 	
+	
+	
+	
+	
+	public Product(Long id, Long userId, Double price, Integer quantity, String name, String path, String description,
+			List<ProductImage> images, LocalDateTime createdAt, LocalDateTime deletedAt) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.price = price;
+		Quantity = quantity;
+		this.name = name;
+		this.path = path;
+		this.description = description;
+		this.images = images;
+		this.createdAt = createdAt;
+		this.deletedAt = deletedAt;
+	}
 	public Product(Long id, Long userId,String name, Double price, Integer quantity, LocalDateTime createdAt,
 			LocalDateTime deletedAt) {
 		super();
@@ -68,6 +92,21 @@ public class Product{
 		this.deletedAt = deletedAt;
 		this.name=name;
 		this.path = this.name.replace(" ", "-") + "-" + this.id;
+
+	}
+	
+	public Product(Long id, Long userId,String name, Double price, Integer quantity,String description, LocalDateTime createdAt,
+			LocalDateTime deletedAt) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.price = price;
+		Quantity = quantity;
+		this.createdAt = createdAt;
+		this.deletedAt = deletedAt;
+		this.name=name;
+		this.path = this.name.replace(" ", "-") + "-" + this.id;
+		this.description=description;
 
 	}
 
@@ -92,7 +131,12 @@ public class Product{
 		this.id = id;
 	}
 
-
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public Long getUserId() {
 		return userId;
@@ -130,7 +174,9 @@ public class Product{
 
 
 
-
+	public String getPath() {
+		return path;
+	}
 
 
 

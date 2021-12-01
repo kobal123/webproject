@@ -1,5 +1,7 @@
 package order.item;
 
+import java.util.Objects;
+
 public class OrderItem {
 
 	private Long id;
@@ -26,6 +28,25 @@ public class OrderItem {
 	
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, itemPrice, orderId, productId, quantity);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderItem other = (OrderItem) obj;
+		return Objects.equals(id, other.id) && Objects.equals(itemPrice, other.itemPrice)
+				&& Objects.equals(orderId, other.orderId) && Objects.equals(productId, other.productId)
+				&& Objects.equals(quantity, other.quantity);
 	}
 
 	public void setProductId(Long productId) {
@@ -63,10 +84,18 @@ public class OrderItem {
 		return orderId;
 	}
 	public Double getGrandTotal() {
-		return itemPrice;
+		return itemPrice*quantity;
 	}
 	public Integer getQuantity() {
 		return quantity;
+	}
+
+	public Double getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(Double itemPrice) {
+		this.itemPrice = itemPrice;
 	}
 
 	

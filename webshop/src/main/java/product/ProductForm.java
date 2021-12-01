@@ -8,12 +8,27 @@ public class ProductForm {
 	private Double price;
 	private Integer Quantity;
 	private String name;
+	private String description;
 	private LocalDateTime  updatedAt;
 	
 	
 	
 	
 	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public ProductForm(Long userId, Double price, Integer quantity, String name, String description) {
+		super();
+		this.userId = userId;
+		this.price = price;
+		Quantity = quantity;
+		this.name = name;
+		this.description = description;
+	}
 	public ProductForm( Long userId,String name, Double price, int quantity) {
 		super();
 		this.userId=userId;

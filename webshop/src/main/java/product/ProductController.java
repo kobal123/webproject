@@ -69,7 +69,7 @@ public class ProductController {
 	public String addPage(Model model) {
 
 		model.addAttribute("productForm",new ProductForm());
-		return "product";
+		return "add-product";
 	}
 	
 	@GetMapping("")

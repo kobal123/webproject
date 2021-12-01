@@ -6,4 +6,6 @@ import java.util.List;
 public interface RoleDao  {
 
 	public List<Role> selectUserRolesByUsername(String username);
+	
+	public void addUserRoleToUser(String username);
 }

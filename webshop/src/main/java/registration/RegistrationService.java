@@ -12,13 +12,15 @@ import form.UserForm;
 import form.converter.UserFormConverter;
 import user.AppUser;
 import user.AppUserService;
+import user.RoleDao;
+import user.RoleDataAccessService;
 import user.RoleService;
 
 @Service
 public class RegistrationService {
 
 	private final AppUserService userService;
-	private final RoleService roleService;
+	private final RoleDataAccessService roleAccessService;
 	private final CartService cartService;
 	private final PasswordEncoder encoder;
 	
@@ -26,10 +28,10 @@ public class RegistrationService {
 	
 	
 	
-	public RegistrationService(AppUserService userService, RoleService roleService, BCryptPasswordEncoder encoder, CartService cartService) {
+	public RegistrationService(AppUserService userService, RoleDataAccessService roleService, BCryptPasswordEncoder encoder, CartService cartService) {
 		super();
 		this.userService = userService;
-		this.roleService = roleService;
+		this.roleAccessService = roleService;
 		this.encoder= encoder;
 		this.cartService=cartService;
 	}
@@ -63,17 +65,8 @@ public class RegistrationService {
 
 			Long userId = userService.addUser(user);
 			cartService.createCartForNewUser(userId);
-			/*
-			 * 
-			 * TODO:
-			 * 
-			 * ROLE_USER hozzáadása az új felhasználókhoz,
-			 * Cart létrehozása
-			 * 
-			 * 
-			 * 
-			 * 
-			 * */
+			roleAccessService.addUserRoleToUser(user.getName());
+
 			
 		
 	}

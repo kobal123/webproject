@@ -21,7 +21,8 @@ public class ProductResultSetExtractor implements ResultSetExtractor<Product>{
 		String name = rs.getString("product_name");
 		String createdAt = rs.getString("created_at");
 		String updatedAt = rs.getString("updated_at");
-		return new Product(id,userID,name,price,quantity,LocalDateTime
+		String description = rs.getString("description");
+		return new Product(id,userID,name,price,quantity,description,LocalDateTime
 				.parse(createdAt.replace(' ', 'T').substring(0, createdAt.length()-3)),
 				LocalDateTime.now());
 		}

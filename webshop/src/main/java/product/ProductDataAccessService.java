@@ -50,8 +50,8 @@ public class ProductDataAccessService implements ProductDao{
 		
 		
 		var sql = """ 
-				insert into product(user_id,price,quantity,created_At,updated_At,product_name)
-				values(?,?,?,?,?,?) ;
+				insert into product(user_id,price,quantity,created_At,updated_At,product_name,description)
+				values(?,?,?,?,?,?,?) ;
 				""";
 		
 		
@@ -66,7 +66,7 @@ public class ProductDataAccessService implements ProductDao{
 				      statement.setObject(4, p.getCreatedAt());
 				      statement.setObject(5, p.getDeletedAt());
 				      statement.setString(6,p.getName());
-				      
+				      statement.setString(7, p.getDescription());
 				      return statement;
 				    }
 				  }, keyHolder);
@@ -110,7 +110,7 @@ public class ProductDataAccessService implements ProductDao{
 	@Override
 	public List<String> getProductNamesLikeInput(String name) {
 		var sql = """ 
-				SELECT product_name
+				SELECT DISTINCT product_name
 				FROM product
 				where product_name like ?
 				LIMIT 10;

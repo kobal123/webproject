@@ -40,7 +40,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		System.out.println("hi");
 		http.csrf().disable();
 		//http.authorizeRequests().anyRequest().authenticated();
-		http.authorizeRequests().antMatchers("/users/**").hasRole("ADMIN")
+		http.authorizeRequests().antMatchers("/users/**").hasRole("ROLE_ADMIN")
 		.anyRequest().authenticated();
 	}
 

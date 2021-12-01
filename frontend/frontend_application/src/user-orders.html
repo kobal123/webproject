@@ -25,7 +25,7 @@
         <link href="css/style.css" rel="stylesheet">
     </head>
 
-    <body id="body">
+    <body>
         <!-- Top bar Start -->
         <div class="top-bar">
             <div class="container-fluid">
@@ -44,9 +44,43 @@
         <!-- Top bar End -->
         
         <!-- Nav Bar Start -->
-        <div class="nav" th:replace="fragments :: navbar">
-           
-            
+        <div class="nav">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                    <a href="#" class="navbar-brand">MENU</a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto">
+                            <a href="index.html" class="nav-item nav-link">Home</a>
+                            <a href="product-list.html" class="nav-item nav-link">Products</a>
+                            <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
+                            <a href="cart.html" class="nav-item nav-link active">Cart</a>
+                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
+                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
+                                <div class="dropdown-menu">
+                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
+                                    <a href="login.html" class="dropdown-item">Login & Register</a>
+                                    <a href="contact.html" class="dropdown-item">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="navbar-nav ml-auto">
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">Login</a>
+                                    <a href="#" class="dropdown-item">Register</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
         </div>
         <!-- Nav Bar End -->      
         
@@ -94,79 +128,72 @@
             </div>
         </div>
         <!-- Breadcrumb End -->
-        
+        <!--
+        <div >
+            <div th:each="element : ${orderItemMap}">
+                <span>rendelési id </span><span th:text="${element.getOrderId()}">keyvalue</span>
+                <table style="margin-left: 2em;"  >
+                    <tr  th:each="orderItem : ${element.getItems()}">
+                        <td style="padding: 1em;" th:text="${orderItem.getProductId()}">Some name</td>
+                        <td style="padding: 1em;" th:text="${orderItem.getGrandTotal()}"></td>
+                        <td style="padding: 1em;" th:text="${orderItem.getQuantity()}"></td>
+                        
+                    </tr>
+                </table>
+            </div>
+        </div>
+        -->
         <!-- Cart Start -->
+
+
+
+        <div >
+            <div th:each="element : ${orderItemMap}">
+                <span>rendelési id </span><span th:text="${element.getOrderId()}">keyvalue</span>
+                <table style="margin-left: 2em;"  >
+                    <tr  th:each="entry : ${element.getMap()}">
+                        <td style="padding: 1em;" th:text="${entry.key.getGrandTotal}">Some name</td>
+                        <td style="padding: 1em;" th:text="${entry.value.getName}">Some name</td>
+
+                        <td style="padding: 1em;">
+                            <div class="img">
+                            
+                                <img style="width: 200px; height: 200px;" th:src="@{|http://localhost:8080/products/${entry.value.getId}/${entry.value.getImages.get(0).getPath}|}" alt="Product Image">
+                            
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div style="border-bottom: thin solid black;">
+                    
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="cart-page">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="cart-page-inner">
                             <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Quantity</th>
-                                            <th>Total</th>
-                                            <th>Remove</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="align-middle">
-                                        <!--- Fragment start-->
-                                        <th:block th:each="item : ${wrapper}">
-                                            <tr>
-                                                <td>
-                                                    <div class="img">
-                                                        <a href="#"><img th:src="@{|http://localhost:8080/products/${item.getCartItem().getProductId()}/${item.getProduct.getImages().get(0).getPath()}|}" alt="Image"></a>
-                                                        <p th:text="${item.getProduct().getName()}"></p>
-                                                    </div>
-                                                </td>
-                                                <td>$ <span th:text="${#numbers.formatDecimal(item.getProduct.getPrice(), 0, 'COMMA', 2, 'POINT')}">10.00</span></td>
-                                                <td>
-                                                    <div class="qty">
-                                                        <button class="btn-minus" th:attr="onclick=|decreaseItemQuantity('${item.getProduct.getId()}')|" ><i class="fa fa-minus"></i></button>
-                                                        <input class="qnt-input" th:id ="'qnt_' + ${item.getProduct.getId()} " type="text" th:value="${item.getCartItem().getQuantity()}">
-                                                        <button class="btn-plus" th:attr="onclick=|addToCart('${item.getProduct.getId()}')|" ><i class="fa fa-plus"></i></button>
-                                                    </div>
-                                                </td>
-                                                <td>$ <span th:id="'prc_' + ${item.getProduct.getId()} " th:text="${#numbers.formatDecimal(item.getPrice(), 0, 'COMMA', 2, 'POINT')}">10.00</span></td>
-
-                                                
-                                                <td><button th:attr="onclick=|deleteCartItem('${item.getCartItem().getId()}')|"><i class="fa fa-trash"></i></button></td>
-                                            </tr>    
-                                        </th:block>
-
-                                        <!--- Fragment end-->
-                                    </tbody>
-                                </table>
+                                
+                                
+                                
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="cart-page-inner">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="coupon">
-                                        <input type="text" placeholder="Coupon Code">
-                                        <button>Apply Code</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="cart-summary">
-                                        <div class="cart-content">
-                                            <h1>Cart Summary</h1>
-
-                                            <h2>Grand Total<span>$</span><span id="grand-total" th:text="${total_price}"></span></h2>
-                                        </div>
-                                        <div id="place-order-button" class="cart-btn">
-                                            <button>Place order</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -250,7 +277,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 copyright">
-                        <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+                        <p>Copyright FUCK YOU ÁÁÁÁÁÁ &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
                     </div>
 
                     <div class="col-md-6 template-by">
@@ -299,14 +326,6 @@
           let token = document.querySelector('meta[name="_csrf"]').content;
           let header = document.querySelector('meta[name="_csrf_header"]').content;
           
-          request.onreadystatechange = () =>{
-                        if(request.readyState === 4){
-                        
-                            document.location = "http://localhost:8080/cart";
-
-                        }   
-            }
-
           request.open("POST", "http://localhost:8080/cart/add?id="+obj+"&qnt="+qnt);
           request.setRequestHeader(header,token);
           request.send();
@@ -320,100 +339,10 @@
           let token = document.querySelector('meta[name="_csrf"]').content;
           let header = document.querySelector('meta[name="_csrf_header"]').content;
           
-          request.onreadystatechange = () =>{
-                        if(request.readyState === 4){
-                            console.log(request.responseText);
-                            const data = JSON.parse(request.responseText)
-                            console.log(data);
-                            const price = document.getElementById("prc_"+obj);
-                            const old_price = parseInt(price.innerHTML,10)
-                            console.log(price.innerHTML)
-                            const new_price = ((data["prc"].toFixed(2)) * (data["qnt_diff"].toFixed(2))).toFixed(2);
-                            price.innerHTML = new_price;
-                            const g_total =document.getElementById("grand-total");
-                            const grand_total = parseInt(g_total.innerHTML,10)
-                            g_total.innerHTML = (grand_total + (new_price - old_price)).toFixed(2);
-                        }   
-            }
-
-          request.open("POST", "http://localhost:8080/api/cart/add?id="+obj+"&qnt="+1);
+          request.open("POST", "http://localhost:8080/cart/add?id="+obj+"&qnt="+qnt);
           request.setRequestHeader(header,token);
           request.send();
         }
-
-
-        function deleteCartItem(cartItemId){
-            let request = new XMLHttpRequest();
-          let token = document.querySelector('meta[name="_csrf"]').content;
-          let header = document.querySelector('meta[name="_csrf_header"]').content;
-          
-                    request.onreadystatechange = () =>{
-                        if(request.readyState === 4){
-                        
-                            document.location = "http://localhost:8080/cart";
-
-                        }   
-            }
-          request.open("POST", "http://localhost:8080/cart/delete?cartItemId=" +cartItemId);
-          request.setRequestHeader(header,token);
-          request.send();
-        }
-
-
-        let orderButton = document.getElementById("place-order-button");
-
-        orderButton.addEventListener("click",()=>{
-            let request = new XMLHttpRequest();
-          let token = document.querySelector('meta[name="_csrf"]').content;
-          let header = document.querySelector('meta[name="_csrf_header"]').content;
-          
-                    request.onreadystatechange = () =>{
-                        if(request.readyState === 4){
-                        
-                            document.location = "http://localhost:8080/orders";
-
-                        }   
-            }
-          request.open("GET", "http://localhost:8080/orders/place");
-          request.setRequestHeader(header,token);
-          request.send();
-        });
-
-
-        function decreaseItemQuantity(obj){
-            //          request.open("POST", "http://localhost:8080/api/cart/add?id="+obj+"&qnt=-1");
-        let qnt = parseInt(document.getElementById("qnt_"+obj).value,10) +1
-          console.log(qnt)
-          let request = new XMLHttpRequest();
-          let token = document.querySelector('meta[name="_csrf"]').content;
-          let header = document.querySelector('meta[name="_csrf_header"]').content;
-          
-          request.onreadystatechange = () =>{
-                        if(request.readyState === 4){
-                        
-                            //document.location = "http://localhost:8080/cart";
-                            console.log(request.responseText);
-                            const data = JSON.parse(request.responseText)
-                            console.log(data);
-                            const price = document.getElementById("prc_"+obj);
-                            const old_price = parseInt(price.innerHTML,10)
-                            console.log(price.innerHTML)
-                            const new_price = ((data["prc"].toFixed(2)) * (data["qnt_diff"].toFixed(2))).toFixed(2);
-                            price.innerHTML = new_price;
-                            const g_total =document.getElementById("grand-total");
-                            const grand_total = parseInt(g_total.innerHTML,10)
-                            g_total.innerHTML = (grand_total + (new_price - old_price)).toFixed(2);
-                        }   
-            }
-
-            request.open("POST", "http://localhost:8080/api/cart/add?id="+obj+"&qnt=-1");
-            request.setRequestHeader(header,token);
-            request.send();
-
-        }
-
-
-
         
             /*]]>*/
         

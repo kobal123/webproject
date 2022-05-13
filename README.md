@@ -20,7 +20,8 @@ Funckionalitások:
 * Felhasználók regisztrálása
 * Termékek létrehozása, kép hozzáadása
 * Bevásárló kosár
-* Termék keresés autocomplete
+* Termékhez komment hozzáadása
+* Rendelés leadás
 
 
 

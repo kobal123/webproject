@@ -1,5 +1,6 @@
 package order;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,11 @@ public class Order{
 	private Long userId;
 	private Double grandTotal;
 	private String shippingAddress;
-	private LocalDateTime createdAt;
+	private LocalDate createdAt;
 	private LocalDateTime updatedAt;
 
 	
-	public Order(Long id, Long userId, Double grandTotal, String shippingAddress, LocalDateTime createdAt,
+	public Order(Long id, Long userId, Double grandTotal, String shippingAddress, LocalDate createdAt,
 			LocalDateTime updatedAt) {
 		super();
 		this.id = id;
@@ -29,7 +30,7 @@ public class Order{
 
 	}
 	
-	public Order( Long userId, Double grandTotal, String shippingAddress, LocalDateTime createdAt,
+	public Order( Long userId, Double grandTotal, String shippingAddress, LocalDate createdAt,
 			LocalDateTime updatedAt) {
 		super();
 		this.userId = userId;
@@ -39,7 +40,7 @@ public class Order{
 		this.updatedAt = updatedAt;
 
 	}
-	public Order( Long userId, String shippingAddress, LocalDateTime createdAt,
+	public Order( Long userId, String shippingAddress, LocalDate createdAt,
 			LocalDateTime updatedAt) {
 		super();
 		this.userId = userId;
@@ -93,12 +94,12 @@ public class Order{
 	}
 
 
-	public LocalDateTime getCreatedAt() {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
 
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
 

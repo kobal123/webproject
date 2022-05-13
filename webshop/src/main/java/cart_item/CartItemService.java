@@ -22,7 +22,6 @@ public class CartItemService {
 		
 		cartItemDataAccessService.addCartItemToCart(item);
 		
-		System.out.println("the item "+item.toString()+" was added to the cart "+ cart.toString());
 	}
 	
 	

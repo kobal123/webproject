@@ -9,19 +9,19 @@ public class OrderItem {
 	private Long orderId;
 	private Double itemPrice;
 	private Integer quantity;
-	public OrderItem(Long productId, Long orderId, Double grandTotal, Integer quantity) {
+	public OrderItem(Long productId, Long orderId, Double itemPrice, Integer quantity) {
 		super();
 		this.productId = productId;
 		this.orderId = orderId;
-		this.itemPrice = grandTotal;
+		this.itemPrice = itemPrice;
 		this.quantity = quantity;
 	}
 	
-	public OrderItem(Long productId, Double grandTotal, Integer quantity) {
+	public OrderItem(Long productId, Double itemPrice, Integer quantity) {
 		super();
 		this.productId = productId;
 		
-		this.itemPrice = grandTotal;
+		this.itemPrice = itemPrice;
 		this.quantity = quantity;
 	}
 	
@@ -70,8 +70,9 @@ public class OrderItem {
 		this.id = id;
 		this.productId = productId;
 		this.orderId = orderId;
-		this.itemPrice = grandTotal;
+	
 		this.quantity = quantity;
+		this.itemPrice = grandTotal / quantity;
 	}
 	
 	public Long getId() {

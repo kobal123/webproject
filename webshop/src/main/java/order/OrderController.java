@@ -12,29 +12,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import order.detail.OrderDetail;
+import order.detail.OrderDetailRepository;
 import order.item.OrderItem;
+import order.item.OrderItemRepository;
 
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
 	private OrderService orderService;
+	private OrderDetailRepository orderDetailRepository;
+	private OrderItemRepository itemRepository;
 
-
 	
 	
 	
 	
-	public OrderController(OrderService orderService) {
+	
+	
+	public OrderController(OrderService orderService, OrderDetailRepository orderDetailRepository,
+			OrderItemRepository itemRepository) {
 		super();
 		this.orderService = orderService;
+		this.orderDetailRepository = orderDetailRepository;
+		this.itemRepository = itemRepository;
 	}
 
-	
 	@GetMapping("/place")
-	public String placeOrder(Principal p) {
-		orderService.placeOrderForUser(Long.parseLong(p.getName()));
+	public String placeOrder(Principal p,OrderDetail orderDetail) {
+		orderService.placeOrderForUser(Long.parseLong(p.getName()),orderDetail);
 		
-		return "redirect:/";
+		return "redirect:/orders";
 	}
 
 	@GetMapping("")
@@ -45,17 +53,39 @@ public class OrderController {
 			System.out.println(o.getItems().toString());
 		}
 		
-		model.addAttribute("orderItemMap",orderItems);
+		model.addAttribute("orderItems",orderItems);
 		
+		//return "user-orders";
 		return "user-orders";
+
 	}
 	
 	
+	@GetMapping("/checkout")
+	public String checkout(Principal p,Model m) {
+		
+		m.addAttribute("orderDetail",new OrderDetail());
+		
+		
+		return "checkout";
+	}
+	
+	
+	
+	
 	@GetMapping("/{orderId}")
-	public String getSingleOrder(Principal principal,@PathVariable Long orderId) {
+	public String getSingleOrder(Principal principal,@PathVariable Long orderId,Model m) {
 		
 		try {
 			Order o = orderService.loadOrderByUserIdAndOrderId(Long.parseLong(principal.getName()),orderId);
+			OrderDetail detail = orderDetailRepository.getOrderDetailsById(orderId);
+			List<OrderObjectWrapper> items = orderService.getAllOrderDataByOrderId(orderId);
+			m.addAttribute("detail",detail);
+			m.addAttribute("items",items.get(0));
+			m.addAttribute("order",o);
+			System.out.println(items.size());
+			
+			
 		} catch (NumberFormatException e) {
 
 			
@@ -65,6 +95,20 @@ public class OrderController {
 			e.printStackTrace();
 		}
 		
-		return "orders";
+		return "order_details";
 	}
+	
+	
+
+	
+	
+	
+	
+	
 }
+
+
+
+
+
+

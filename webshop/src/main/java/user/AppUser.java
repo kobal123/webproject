@@ -9,12 +9,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 
 
 
-public class AppUser implements OAuth2User,Serializable{
+public class AppUser  implements OAuth2User,Serializable{
 
 private  Long id;
 private String name;

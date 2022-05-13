@@ -34,6 +34,7 @@ public class ProductDataAccessService implements ProductDao{
 		var sql = """ 
 				SELECT * 
 				FROM product
+				order by id desc
 				LIMIT 20;
 				""";
 		
@@ -134,6 +135,7 @@ public class ProductDataAccessService implements ProductDao{
 				SELECT *
 				FROM product
 				where product_name like ?
+				order by id desc
 				LIMIT 100;
 				""";
 		

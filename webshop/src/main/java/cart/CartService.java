@@ -97,7 +97,6 @@ public class CartService {
 		CartItem item = CheckItem(cart, productId);
 		
 		if(!Objects.equals(item, null)) {
-			System.out.println("The item " + item.toString()+ " exist, increasing quantity by "+quantity);
 			cartItemDao.updateCartItem(productId,item.getQuantity()+quantity);
 		}else {
 			System.out.println("The item  does not exist yet, adding it");

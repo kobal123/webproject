@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import registration.RegistrationService;
 import user.AppUser;
 import user.AppUserDataAccessService;
 import user.RoleDao;
@@ -26,17 +27,22 @@ import user.UserDao;
 @Service
 public class OAuthService extends DefaultOAuth2UserService{
 	private final UserDao userdao;
+	private final RegistrationService registrationService;
 	
 	
-
-	public OAuthService(AppUserDataAccessService userdao) {
+	
+	
+	
+	public OAuthService(UserDao userdao, RegistrationService registrationService) {
 		super();
-				
 		this.userdao = userdao;
-		System.out.println("creating OauthService bean");
-	
+		this.registrationService = registrationService;
 	}
-	
+
+
+
+
+
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest)
 			throws OAuth2AuthenticationException {
@@ -64,10 +70,14 @@ public class OAuthService extends DefaultOAuth2UserService{
 				System.out.println("creating new user from oauth...");
 				appuser = new AppUser(authuser.getName(),authuser.getAttribute("email"));
 				Long id = userdao.addUsers(appuser);
+				appuser.setId(id);
+				registrationService.registerOauthUser(appuser);
+				
 			}
 			
-			
+			System.out.println("appuser before setName: "+appuser.getName());
 			appuser.setName(appuser.getId().toString());
+			System.out.println("appuser after setName: "+appuser.getName());
 			return appuser;
 			
 

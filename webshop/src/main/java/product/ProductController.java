@@ -2,7 +2,9 @@ package product;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +28,11 @@ import org.springframework.web.servlet.ModelAndView;
 import image.ImageDao;
 import image.ImageService;
 import image.ProductImage;
+import product.comment.ProductComment;
+import product.comment.ProductCommentForm;
+import product.comment.ProductCommentRepository;
+import product.comment.ProductCommentWrapper;
+import product.comment.ProductFormConverter;
 import user.AppUser;
 import user.AppUserService;
 
@@ -37,21 +44,25 @@ public class ProductController {
 	private final ImageService imageService;
 	private final ProductService productService;
 	private final AppUserService appUserService;
+	private final ProductCommentRepository commentRepository;
 	
 	
-	
-	public ProductController(ImageService imageService, ProductService productService, AppUserService appUserService) {
+	public ProductController(ImageService imageService, ProductService productService, AppUserService appUserService,
+			ProductCommentRepository commentRepository) {
 		super();
 		this.imageService = imageService;
 		this.productService = productService;
 		this.appUserService = appUserService;
+		this.commentRepository = commentRepository;
 	}
-	
-	@GetMapping("/{username}")
+
+
+
+	@GetMapping("/user/{username}")
 	public String getUserProducts(Model m, @PathVariable String username) {
 		
 		AppUser user = appUserService.getUserByUsername(username);
-		
+		System.out.println("asdf");
 		List<Product> products = productService.getProductsByUserId(user.getId());
 		
 		for( Product p : products) {
@@ -84,7 +95,7 @@ public class ProductController {
 		
 		m.addAttribute("products", products);
 		
-		return "user-products";
+		return "products";
 	}
 	
 	
@@ -139,15 +150,62 @@ public class ProductController {
 		String name = builder.toString();
 		Product p = productService.getProductByIdAndName(productId, name);
 		p.images = imageService.getImageByProductId(productId);
+		List<ProductComment> comments = commentRepository.getCommentsByProductId(productId);
+		
+		List<ProductCommentWrapper> wrapper = new ArrayList<>();
+		for(ProductComment c : comments) {
+			wrapper.add(new ProductCommentWrapper(c, appUserService.loadUserById(c.getUserId())));
+		}
 		
 		m.addAttribute("product",p);
 		m.addAttribute("image", p.images.get(0));
-		
-		
+		m.addAttribute("productCommentForm", new ProductCommentForm());
+		m.addAttribute("comments", wrapper);
 		return "product-detail";
 	}
 	
+
+
+@PostMapping(path = "/p/{path}")
+String AddReviewToProduct(Principal p,ProductCommentForm form,@PathVariable String path, Model m) {
+	String[] arr = path.split("-");
+	Long productId = Long.parseLong(arr[arr.length-1]);
+	Long userId = Long.parseLong(p.getName());
+	ProductComment comment= ProductFormConverter.ProductCommentFromProductForm(userId,productId,form);
+	comment.setUserId(userId);
+	comment.setCreatedAt(LocalDate.now());
+	System.out.println(comment.toString());
+	commentRepository.addCommentToProduct(comment);
+	
+	
+	return "redirect:/";
 }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

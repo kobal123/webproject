@@ -2,6 +2,7 @@ package order;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +17,15 @@ public class OrderResultSetExtractor implements	ResultSetExtractor<Order> {
 		Order order = null;
 		while(rs.next()) {
 			Long id = rs.getLong("id");
-			Long userId = rs.getLong("user_idd");
+			Long userId = rs.getLong("user_id");
 			Double total = rs.getDouble("grand_total");
 			String shipping = rs.getString("shipping_address");
 			String createdAt = rs.getString("created_at");
 			String updatedAt = rs.getString("updated_at");
-			LocalDateTime created = LocalDateTime
-					.parse(createdAt.replace(' ', 'T').substring(0, createdAt.length()-3));
+			LocalDate created = LocalDate
+					.parse(createdAt);
 			
-			LocalDateTime updated = LocalDateTime
-					.parse(updatedAt.replace(' ', 'T').substring(0, updatedAt.length()-3));
-			Boolean cancelled = rs.getBoolean("is_cancelled");
+			LocalDateTime updated = null;
 			order = new Order(id,userId,total,shipping,created,updated);
 		}
 		

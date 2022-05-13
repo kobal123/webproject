@@ -13,8 +13,9 @@ public class OrderItemRowMapper implements RowMapper<OrderItem> {
 		Long orderId  = rs.getLong("order_id");
 		Long productId  = rs.getLong("product_id");
 		Double total = rs.getDouble("total");
+		
 		Integer quantity = rs.getInt("quantity");
-
+		Double itemPrice = total/quantity;
 		
 		
 		return new OrderItem(id, productId, orderId, total, quantity);

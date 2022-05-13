@@ -1,5 +1,6 @@
 package order;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import cart.Cart;
 import cart.CartService;
 import cart_item.CartItem;
 import image.ImageDao;
+import order.detail.OrderDetail;
+import order.detail.OrderDetailRepository;
 import order.item.OrderItem;
 import order.item.OrderItemDao;
 import product.Product;
@@ -30,12 +33,14 @@ public class OrderService {
 	private final OrderItemDao orderItemDao;
 	private final ProductService productService;
 	private final ImageDao imageDao;
+	private final OrderDetailRepository detailRepository;
 
 	
 
 	
 	
 	
+
 
 
 
@@ -46,13 +51,14 @@ public class OrderService {
 
 
 	public OrderService(OrderDao orderDao, CartService cartService, OrderItemDao orderItemDao,
-			ProductService productService, ImageDao imageDao) {
+			ProductService productService, ImageDao imageDao, OrderDetailRepository detailRepository) {
 		super();
 		this.orderDao = orderDao;
 		this.cartService = cartService;
 		this.orderItemDao = orderItemDao;
 		this.productService = productService;
 		this.imageDao = imageDao;
+		this.detailRepository = detailRepository;
 	}
 
 
@@ -71,12 +77,34 @@ public class OrderService {
 
 		Order o = orderDao.getOrderByOrderId(orderId);
 		
-		if(!Objects.equals(o, null) &&!Objects.equals(userId, orderId)) {
+		if(!Objects.equals(o, null) &&!Objects.equals(userId, o.getUserId())) {
 			throw new Exception("user is trying to access an order that is not theirs");
 		}
 		
 		return o ;
 	}
+	
+	
+public List<OrderObjectWrapper> getAllOrderDataByOrderId(Long orderId){
+		
+		Order orders = orderDao.getOrderByOrderId(orderId);
+		
+		List<OrderObjectWrapper> orderItems = new ArrayList<OrderObjectWrapper>();
+		
+			List<OrderItem> i = orderItemDao.getOrderItemsByOrderId(orderId);
+			Map<OrderItem,Product> map = new HashMap<>();
+			for(OrderItem tmp : i) {
+				Product p = productService.getProductById(tmp.getProductId());
+				
+				map.put(tmp, p);
+			}
+			orderItems.add(new OrderObjectWrapper(orderId,i ,orders.getGrandTotal(),map,orders.getCreatedAt()));		
+		
+		
+
+		return orderItems;
+	}
+	
 	
 	
 	
@@ -94,7 +122,7 @@ public class OrderService {
 				
 				map.put(tmp, p);
 			}
-			orderItems.add(new OrderObjectWrapper(orderId,i ,map));		
+			orderItems.add(new OrderObjectWrapper(orderId,i ,o.getGrandTotal(),map,o.getCreatedAt()));		
 		}
 		
 
@@ -104,13 +132,13 @@ public class OrderService {
 	
 	/**
 	 * Places an order for the given user. The order will consist of the items in
-	 * users current shopping cart. All current cart items will be deleted.
+	 * users current shopping cart. All current cart items will be deleted!
 	 * 
 	 * 
 	 * @param userId
 	 */
 	@Transactional
-	public void placeOrderForUser(Long userId) {
+	public void placeOrderForUser(Long userId,OrderDetail orderDetail) {
 		Cart cart = cartService.getUserShoppingCartByUserId(userId);
 		if(cart.getItems().size()==0) {
 			System.out.println("cart is empty");
@@ -118,9 +146,18 @@ public class OrderService {
 		}
 		
 		List<OrderItem> orderItems = OrderItemsFromCartItems(cart);
-		Double grandTotal = orderItems.stream().mapToDouble(OrderItem::getGrandTotal).sum();
-		Order order = new Order(userId,grandTotal,"Hungary, Újkenéz, Petőfi u. 63",LocalDateTime.now(),null);
+		
+		Double grandTotal =0d;//= orderItems.stream().mapToDouble(OrderItem::getGrandTotal).sum();
+		
+		for( OrderItem i : orderItems) {
+			grandTotal += i.getGrandTotal();
+		}
+		
+		
+		Order order = new Order(userId,grandTotal,"Hungary, Újkenéz, Petőfi u. 63",LocalDate.now(),null);
 		Long orderId = orderDao.saveOrder(order);
+		orderDetail.setOrderId(orderId);
+		detailRepository.saveOrderDetail(orderId, orderDetail);
 		cartService.deleteCartItemsByCartId(cart.getId());
 		orderItems.stream().forEach(o-> o.setOrderId(orderId));;
 		orderItemDao.saveMultipleOrderItems(orderItems);
@@ -139,7 +176,7 @@ public class OrderService {
 
 		List<OrderItem> orderItems = new ArrayList<OrderItem>();
 		for (CartItem item : cart.getItems()) {
-			orderItems.add(new OrderItem(item.getProductId(),item.getPrice()*item.getQuantity(), item.getQuantity()));
+			orderItems.add(new OrderItem(item.getProductId(),item.getPrice(), item.getQuantity()));
 		}
 		
 		

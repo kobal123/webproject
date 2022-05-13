@@ -70,5 +70,26 @@ public class RegistrationService {
 			
 		
 	}
+	public void registerOauthUser(AppUser u) {
+
+		
+		AppUser user = u;
+	
+	
+		System.out.println("registrating user....");
+	
+		
+		
+		String password  =user.getPassword();
+		user.setPassword(encoder.encode(password));
+		
+
+		Long userId = userService.addUser(user);
+		cartService.createCartForNewUser(userId);
+		roleAccessService.addUserRoleToUser(user.getName());
+
+		
+	
+}
 	
 }
